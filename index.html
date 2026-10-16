@@ -114,18 +114,16 @@
 </head>
 
 <body class="bg-cream-100 text-cream-900 antialiased font-sans min-h-screen flex flex-col selection:bg-cream-300">
-
-    <!-- Sticky Header -->
-    <header id="navbar-wrapper" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 bg-white/20 backdrop-blur-xl border-b border-cream-200/50">
+<!-- Sticky Header -->
+    <header id="navbar-wrapper" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 py-4 bg-white/20 backdrop-blur-xl border-b border-cream-200/50">
         <div id="navbar-container" class="max-w-7xl mx-auto px-6 sm:px-10 flex items-center justify-between py-2 transition-all duration-300">
 
             <!-- Logo / Name -->
-            <a href="#home" class="font-sans text-xl font-bold tracking-tight text-neutral-900 flex items-center gap-2">
+            <a href="#home" class="font-sans text-xl font-bold tracking-tight text-neutral-900 flex items-center gap-2 z-50">
                 Julia Ibenacho.
-                <!-- <span class="text-xs font-semibold tracking-widest text-neutral-500 uppercase hidden sm:inline-block border-l border-neutral-300 pl-2 ml-1">FFRA</span> -->
             </a>
 
-            <!-- Navigation Links -->
+            <!-- Desktop Navigation Links -->
             <nav class="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider text-neutral-600">
                 <a href="#about" class="hover:text-neutral-900 transition-colors">About</a>
                 <a href="#services" class="hover:text-neutral-900 transition-colors">Services</a>
@@ -133,14 +131,49 @@
                 <a href="#work" class="hover:text-neutral-900 transition-colors">Work</a>
             </nav>
 
-            <!-- CTA Button -->
-            <a href="#contact" class="inline-flex items-center gap-2 px-5 py-3.5 rounded-full text-xs font-semibold bg-accent-customBtn text-white hover:bg-neutral-800 transition-all shadow-sm">
+            <!-- Desktop CTA Button -->
+            <a href="#contact" class="hidden md:inline-flex items-center gap-2 px-5 py-3.5 rounded-full text-xs font-semibold bg-accent-customBtn text-white hover:bg-neutral-800 transition-all shadow-sm">
                 <span>Get in Touch</span>
                 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
             </a>
 
+            <!-- Mobile Hamburger Button -->
+            <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center p-2 text-neutral-900 focus:outline-none z-50 hover:opacity-70 transition-opacity">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+
         </div>
     </header>
+
+    <!-- Off-Canvas Overlay Background -->
+    <div id="offcanvas-overlay" class="fixed inset-0 z-40 bg-gray-900/20 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
+
+    <!-- Off-Canvas Menu Panel -->
+    <div id="offcanvas-menu" class="fixed top-0 right-0 w-full sm:w-96 h-screen bg-[#FAFAFA] z-50 transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] shadow-2xl flex flex-col justify-center items-center md:hidden border-l border-gray-100">
+        
+        <!-- Close Menu Button (Inside Drawer) -->
+        <button id="close-menu-btn" class="absolute top-6 right-6 p-4 text-neutral-900 focus:outline-none hover:rotate-90 transition-transform duration-300">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+
+        <!-- Mobile Navigation Links (Centered) -->
+        <nav class="flex flex-col items-center gap-10 text-lg font-bold uppercase tracking-widest text-neutral-900 mb-12">
+            <a href="#about" class="mobile-link hover:text-neutral-500 transition-colors">About</a>
+            <a href="#services" class="mobile-link hover:text-neutral-500 transition-colors">Services</a>
+            <a href="#process" class="mobile-link hover:text-neutral-500 transition-colors">Process</a>
+            <a href="#work" class="mobile-link hover:text-neutral-500 transition-colors">Work</a>
+        </nav>
+
+        <!-- Mobile CTA Button (Centered) -->
+        <a href="#contact" class="mobile-link inline-flex items-center gap-3 px-8 py-4 rounded-full text-sm font-semibold bg-gray-900 text-white hover:bg-black transition-all shadow-md">
+            <span>Get in Touch</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+    </div>
 
     <main>
         <!-- SECTION 1: HERO SECTION -->
@@ -1381,6 +1414,40 @@ We will do a lot together stay focused. This is good stuff                    </
         document.getElementById('year').textContent = new Date().getFullYear();
     </script>
 
+<!-- Off-Canvas JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const closeBtn = document.getElementById('close-menu-btn');
+            const offcanvasMenu = document.getElementById('offcanvas-menu');
+            const overlay = document.getElementById('offcanvas-overlay');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            // Open Menu Function
+            const openMenu = () => {
+                offcanvasMenu.classList.remove('translate-x-full');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                document.body.style.overflow = 'hidden'; // Prevents background scrolling
+            };
+
+            // Close Menu Function
+            const closeMenu = () => {
+                offcanvasMenu.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                document.body.style.overflow = ''; // Restores background scrolling
+            };
+
+            // Event Listeners
+            menuBtn.addEventListener('click', openMenu);
+            closeBtn.addEventListener('click', closeMenu);
+            overlay.addEventListener('click', closeMenu);
+
+            // Automatically close the menu when a link or CTA is clicked (crucial for single-page scrolling sites)
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+        });
+    </script>
 
     <script src="script.js"></script>
     <script src="animations.js"></script>
