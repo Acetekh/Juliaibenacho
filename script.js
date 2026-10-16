@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    // Carousel JavaScript
+   // Carousel JavaScript
 
     document.addEventListener('DOMContentLoaded', () => {
         // --- Carousel Navigation Logic ---
@@ -211,7 +211,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
-
 
     //  Web3Forms Submission Script 
 
